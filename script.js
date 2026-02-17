@@ -38,7 +38,7 @@ const products = [
         icon: "🍃",
         price: 450,
         currency: "฿",
-        image: "images/gabo-tea.jpg",
+        image: "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=800&q=80",
         description: "Rare Gabo tea from the highlands of Koh Phangan. Known for its earthy, robust flavor and powerful health benefits.",
         benefits: [
             "Boosts immune system",
@@ -53,7 +53,7 @@ const products = [
         icon: "🍂",
         price: 550,
         currency: "฿",
-        image: "images/puer-tea.jpg",
+        image: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=800&q=80",
         description: "Aged Puer tea with deep, complex flavors. Fermented to perfection for a smooth, mellow taste that improves with time.",
         benefits: [
             "Aids weight management",
@@ -68,7 +68,7 @@ const products = [
         icon: "🌺",
         price: 380,
         currency: "฿",
-        image: "images/red-tea.jpg",
+        image: "https://images.unsplash.com/photo-1597318130878-4e47f564e2f3?w=800&q=80",
         description: "Premium red tea with a sweet, full-bodied flavor. Perfect for any time of day with its balanced caffeine content.",
         benefits: [
             "Rich, smooth taste",
@@ -384,11 +384,11 @@ function renderProducts() {
     
     productsGrid.innerHTML = products.map(product => `
         <div class="product-card">
-            <div class="product-image" style="background-image: url('${product.image}'); background-size: cover; background-position: center;">
-                ${!product.image.includes('unsplash') ? product.icon : ''}
+            <div class="product-image">
+                <img src="${product.image}" alt="${product.name}" loading="lazy">
             </div>
             <div class="product-info">
-                <h3 class="product-name">${product.name}</h3>
+                <h3 class="product-name">${product.icon} ${product.name}</h3>
                 <div class="product-price">${product.currency}${product.price}</div>
                 <p class="product-description">${product.description}</p>
                 <ul class="product-benefits">
