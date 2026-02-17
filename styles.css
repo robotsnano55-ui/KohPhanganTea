@@ -9,6 +9,22 @@ body {
     line-height: 1.6;
     color: #333;
     background: #fff;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=1920&q=80');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    opacity: 0.08;
+    z-index: -1;
 }
 
 .container {
@@ -147,66 +163,10 @@ body {
     }
 }
 
-/* Island Gallery */
-.island-gallery {
-    padding: 80px 0;
-    background: #fff;
-}
-
-.gallery-title {
-    text-align: center;
-    font-size: 2.5rem;
-    color: #2d5016;
-    margin-bottom: 50px;
-}
-
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-}
-
-.gallery-item {
-    position: relative;
-    height: 300px;
-    border-radius: 15px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-.gallery-item:hover {
-    transform: scale(1.05);
-}
-
-.gallery-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-}
-
-.gallery-item:hover img {
-    transform: scale(1.1);
-}
-
-.gallery-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-    padding: 30px 20px 20px;
-    color: white;
-    font-size: 1.2rem;
-    font-weight: bold;
-    text-align: center;
-}
-
 /* Products Section */
 .products-section {
     padding: 60px 0 100px 0;
-    background: #f8f9fa;
+    background: rgba(255, 255, 255, 0.95);
 }
 
 .section-title {
@@ -345,7 +305,7 @@ body {
 /* About Section */
 .about-section {
     padding: 100px 0;
-    background: #f8f9fa;
+    background: rgba(248, 249, 250, 0.95);
 }
 
 .about-grid {
@@ -441,7 +401,7 @@ body {
 .contact-section {
     padding: 80px 0;
     text-align: center;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    background: rgba(255, 255, 255, 0.95);
 }
 
 .contact-section h2 {
