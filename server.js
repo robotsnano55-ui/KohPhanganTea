@@ -2,7 +2,7 @@
 // Run with: node server.js
 
 const express = require('express');
-const stripe = require('stripe')('sk_test_51T1sQxKL1oY4szixnNtNggTTSsi5Pkkf95BfY6ohbE71r43xQgW4BpYx0NWN8Fl4xrRi3bioka5SvXoqDTCbaYBo00VCBTy3Xe');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY || 'your_stripe_secret_key_here');
 const app = express();
 
 app.use(express.json());

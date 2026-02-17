@@ -76,20 +76,37 @@ body {
 .header-banner {
     margin-top: 60px;
     background: linear-gradient(135deg, #2d5016 0%, #4a7c2c 100%);
-    padding: 60px 0;
+    padding: 80px 0;
     text-align: center;
     color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.header-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><path fill="rgba(255,255,255,0.05)" d="M0,0 Q300,60 600,30 T1200,0 L1200,120 L0,120 Z"/></svg>');
+    background-size: cover;
+    opacity: 0.3;
 }
 
 .banner-title {
     font-size: 3rem;
     margin-bottom: 15px;
     font-weight: 700;
+    position: relative;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
 .banner-subtitle {
     font-size: 1.3rem;
     opacity: 0.95;
+    position: relative;
 }
 
 /* Products Section */
@@ -135,11 +152,29 @@ body {
     width: 100%;
     height: 300px;
     object-fit: cover;
-    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    background: linear-gradient(135deg, #2d5016 0%, #4a7c2c 50%, #6b9d3e 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 8rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.product-image::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(10%, 10%); }
 }
 
 .product-info {
@@ -229,53 +264,129 @@ body {
 .contact-section {
     padding: 80px 0;
     text-align: center;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
 }
 
 .contact-section h2 {
     font-size: 2.5rem;
     color: #2d5016;
-    margin-bottom: 40px;
+    margin-bottom: 15px;
+}
+
+.contact-subtitle {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 50px;
 }
 
 .contact-buttons {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1000px;
+    margin: 0 auto 50px;
+    padding: 0 20px;
 }
 
 .contact-btn {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 15px 35px;
-    border-radius: 50px;
+    gap: 20px;
+    padding: 30px;
+    border-radius: 20px;
     text-decoration: none;
     color: white;
     font-size: 1.1rem;
     font-weight: bold;
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: all 0.3s;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.2);
+    transition: left 0.5s;
+}
+
+.contact-btn:hover::before {
+    left: 100%;
 }
 
 .contact-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.25);
 }
 
-.contact-btn .icon {
-    font-size: 1.5rem;
+.contact-icon {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.2);
+    border-radius: 15px;
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.contact-label {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.contact-desc {
+    font-size: 0.9rem;
+    opacity: 0.9;
 }
 
 .contact-btn.whatsapp {
-    background: #25D366;
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
 }
 
 .contact-btn.line {
-    background: #00B900;
+    background: linear-gradient(135deg, #00B900 0%, #00C300 100%);
 }
 
 .contact-btn.telegram {
-    background: #0088cc;
+    background: linear-gradient(135deg, #0088cc 0%, #0077b5 100%);
+}
+
+.contact-features {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+}
+
+.feature-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 25px;
+    background: white;
+    border-radius: 50px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    font-weight: 600;
+    color: #2d5016;
+}
+
+.badge-icon {
+    font-size: 1.5rem;
 }
 
 /* Cart Modal */
