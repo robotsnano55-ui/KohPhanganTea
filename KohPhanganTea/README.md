@@ -1,18 +1,16 @@
-# Koh Phangan Chinese Tea - E-Commerce Website
+# Koh Phangan Tea Shop - E-Commerce Website
 
-A professional e-commerce website for selling premium Gabo, Puer, and Red Tea from Koh Phangan with integrated shopping cart, Stripe card payments, and cryptocurrency payments (BTC & USDT).
+A professional e-commerce website for selling premium Gabo, Puer, and Red Tea from Koh Phangan with integrated shopping cart and Stripe payment processing.
 
 ## Features
 
 - Beautiful landing page with hero section
 - 3 premium tea products (Gabo, Puer, Red Tea)
 - Shopping cart functionality
-- **Dual payment options:**
-  - 💳 Card payments via Stripe
-  - ₿ Crypto payments (Bitcoin & USDT)
+- Stripe payment integration (VISA, Mastercard, etc.)
 - WhatsApp, LINE, and Telegram contact buttons
 - Fully responsive design
-- Product images support
+- Product images from Unsplash (replace with your own)
 
 ## Quick Start (Frontend Only)
 

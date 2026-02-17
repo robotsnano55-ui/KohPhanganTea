@@ -9,19 +9,6 @@ const contacts = {
     telegram: "kohphanganTea"  // Your Telegram username
 };
 
-// Crypto Wallet Addresses (UPDATE WITH YOUR ACTUAL WALLETS)
-const cryptoWallets = {
-    btc: "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh", // Your Bitcoin address
-    usdt: "TYASr5UV6HEcXatwdFQfmLVUqQQQMUxHLS", // Your USDT TRC20 address (Tron network)
-    usdtNetwork: "TRC20" // Network: TRC20 (Tron) - lower fees, faster
-};
-
-// Crypto prices (will be calculated from THB)
-const cryptoPrices = {
-    btcRate: 0.000015, // Approximate BTC per THB (update regularly)
-    usdtRate: 0.029    // Approximate USDT per THB (1 THB ≈ 0.029 USDT)
-};
-
 // Stripe Payment Links (Create these at https://dashboard.stripe.com/payment-links)
 // For each product, create a payment link and paste the URL here
 const stripePaymentLinks = {
@@ -187,6 +174,7 @@ function handleCheckout() {
         const paymentLink = stripePaymentLinks[item.id];
         
         if (paymentLink && !paymentLink.includes('YOUR_')) {
+            // Add quantity parameter if supported
             window.location.href = paymentLink;
             return;
         }
@@ -209,170 +197,9 @@ function handleCheckout() {
     if (contactChoice) {
         window.open(`https://wa.me/${contacts.whatsapp.replace(/[^0-9]/g, '')}?text=${message}`, '_blank');
     } else {
+        // Show modal with all contact options
         alert('Please contact us via WhatsApp, LINE, or Telegram (buttons below) to complete your order!');
     }
-}
-
-// ============================================
-// CRYPTO PAYMENT FUNCTIONALITY
-// ============================================
-
-let selectedCrypto = null;
-
-function handleCryptoCheckout() {
-    if (cart.length === 0) {
-        alert('Your cart is empty!');
-        return;
-    }
-    
-    // Close cart modal
-    document.getElementById('cart-modal').classList.remove('active');
-    
-    // Open crypto modal
-    document.getElementById('crypto-modal').classList.add('active');
-    
-    // Reset crypto selection
-    selectedCrypto = null;
-    document.getElementById('crypto-details').style.display = 'none';
-    document.querySelectorAll('.crypto-option-btn').forEach(btn => {
-        btn.classList.remove('selected');
-    });
-}
-
-function selectCrypto(crypto) {
-    selectedCrypto = crypto;
-    
-    // Update button states
-    document.querySelectorAll('.crypto-option-btn').forEach(btn => {
-        btn.classList.remove('selected');
-    });
-    event.target.closest('.crypto-option-btn').classList.add('selected');
-    
-    // Calculate amounts
-    const totalTHB = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    let cryptoAmount, cryptoSymbol, walletAddress;
-    
-    if (crypto === 'btc') {
-        cryptoAmount = (totalTHB * cryptoPrices.btcRate).toFixed(8);
-        cryptoSymbol = 'BTC';
-        walletAddress = cryptoWallets.btc;
-    } else if (crypto === 'usdt') {
-        cryptoAmount = (totalTHB * cryptoPrices.usdtRate).toFixed(2);
-        cryptoSymbol = 'USDT';
-        walletAddress = cryptoWallets.usdt;
-    }
-    
-    // Show payment details
-    document.getElementById('crypto-details').style.display = 'block';
-    document.getElementById('crypto-amount-display').textContent = `${cryptoAmount} ${cryptoSymbol}`;
-    document.getElementById('wallet-address').value = walletAddress;
-    
-    // Generate QR code
-    generateQRCode(walletAddress, cryptoAmount, cryptoSymbol);
-    
-    // Setup contact buttons with order details
-    setupCryptoContactButtons(totalTHB, cryptoAmount, cryptoSymbol);
-    
-    // Scroll to details
-    document.getElementById('crypto-details').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function generateQRCode(address, amount, symbol) {
-    const qrContainer = document.getElementById('qr-code');
-    qrContainer.innerHTML = ''; // Clear previous QR code
-    
-    // Create container for QR code
-    const qrWrapper = document.createElement('div');
-    qrWrapper.style.cssText = 'display: inline-block; padding: 20px; background: white; border-radius: 10px;';
-    qrContainer.appendChild(qrWrapper);
-    
-    // Generate QR code with the wallet address
-    try {
-        new QRCode(qrWrapper, {
-            text: address,
-            width: 250,
-            height: 250,
-            colorDark: "#000000",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.H
-        });
-        
-        // Add label below QR code
-        const label = document.createElement('p');
-        label.textContent = `Scan to send ${amount} ${symbol}`;
-        label.style.cssText = 'margin-top: 15px; color: #666; font-weight: bold;';
-        qrContainer.appendChild(label);
-        
-        // Add network info for USDT
-        if (symbol === 'USDT') {
-            const networkInfo = document.createElement('p');
-            networkInfo.textContent = `Network: ${cryptoWallets.usdtNetwork} (Tron)`;
-            networkInfo.style.cssText = 'margin-top: 5px; color: #f7931a; font-weight: bold; font-size: 0.9rem;';
-            qrContainer.appendChild(networkInfo);
-        }
-    } catch (error) {
-        console.error('QR Code generation error:', error);
-        qrContainer.innerHTML = `
-            <div style="padding: 20px; background: #fff3cd; border-radius: 10px; border: 2px solid #ffc107;">
-                <p style="color: #856404; margin-bottom: 10px;">⚠️ QR Code generation failed</p>
-                <p style="color: #856404; font-size: 0.9rem;">Please copy the address manually</p>
-            </div>
-        `;
-    }
-}
-
-function copyAddress() {
-    const addressInput = document.getElementById('wallet-address');
-    addressInput.select();
-    addressInput.setSelectionRange(0, 99999); // For mobile devices
-    
-    // Modern clipboard API
-    if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(addressInput.value).then(() => {
-            showCopySuccess();
-        }).catch(() => {
-            // Fallback to old method
-            document.execCommand('copy');
-            showCopySuccess();
-        });
-    } else {
-        // Fallback for older browsers
-        document.execCommand('copy');
-        showCopySuccess();
-    }
-}
-
-function showCopySuccess() {
-    const copyBtn = document.getElementById('copy-address');
-    const originalText = copyBtn.textContent;
-    copyBtn.textContent = '✓ Copied!';
-    copyBtn.classList.add('copied');
-    
-    setTimeout(() => {
-        copyBtn.textContent = originalText;
-        copyBtn.classList.remove('copied');
-    }, 2000);
-    
-    showNotification('Address copied to clipboard!');
-}
-
-function setupCryptoContactButtons(totalTHB, cryptoAmount, cryptoSymbol) {
-    const cartDetails = cart.map(item => `${item.name} x${item.quantity}`).join('\n');
-    const message = encodeURIComponent(
-        `Hi! I just sent crypto payment:\n\n` +
-        `Order:\n${cartDetails}\n\n` +
-        `Amount: ${cryptoAmount} ${cryptoSymbol}\n` +
-        `(฿${totalTHB})\n\n` +
-        `Please confirm my order. Transaction ID: [paste here]\n\n` +
-        `Thank you! 🍃`
-    );
-    
-    document.getElementById('whatsapp-crypto').href = 
-        `https://wa.me/${contacts.whatsapp.replace(/[^0-9]/g, '')}?text=${message}`;
-    document.getElementById('line-crypto').href = 
-        `https://line.me/ti/p/~${contacts.line}`;
-    document.getElementById('telegram-crypto').href = 
-        `https://t.me/${contacts.telegram}`;
 }
 
 // ============================================
@@ -420,12 +247,7 @@ function setupCartModal() {
     const cartModal = document.getElementById('cart-modal');
     const closeCart = document.getElementById('close-cart');
     const checkoutBtn = document.getElementById('checkout-btn');
-    const cryptoBtn = document.getElementById('crypto-btn');
-    const cryptoModal = document.getElementById('crypto-modal');
-    const closeCrypto = document.getElementById('close-crypto');
-    const copyBtn = document.getElementById('copy-address');
     
-    // Cart modal
     cartBtn.addEventListener('click', () => {
         cartModal.classList.add('active');
     });
@@ -441,29 +263,6 @@ function setupCartModal() {
     });
     
     checkoutBtn.addEventListener('click', handleCheckout);
-    cryptoBtn.addEventListener('click', handleCryptoCheckout);
-    
-    // Crypto modal
-    closeCrypto.addEventListener('click', () => {
-        cryptoModal.classList.remove('active');
-    });
-    
-    cryptoModal.addEventListener('click', (e) => {
-        if (e.target === cryptoModal) {
-            cryptoModal.classList.remove('active');
-        }
-    });
-    
-    // Crypto option buttons
-    document.querySelectorAll('.crypto-option-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const crypto = btn.getAttribute('data-crypto');
-            selectCrypto(crypto);
-        });
-    });
-    
-    // Copy address button
-    copyBtn.addEventListener('click', copyAddress);
 }
 
 // ============================================
