@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koh Phangan Chinese Tea - Premium Gabo, Puer & Red Tea</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">🍃 Koh Phangan Chinese Tea</div>
+            <div class="nav-links">
+                <a href="#products">Shop</a>
+                <a href="#about">About</a>
+                <button class="cart-btn" id="cart-btn">
+                    🛒 Cart (<span id="cart-count">0</span>)
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Banner -->
+    <section class="header-banner">
+        <div class="container">
+            <h1 class="banner-title">🍃 Premium Chinese Tea from Koh Phangan</h1>
+            <p class="banner-subtitle">Authentic Gabo, Puer & Red Tea • Free Shipping • Secure Payment</p>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-section" id="products">
+        <div class="container">
+            <div class="products-grid" id="products-grid">
+                <!-- Products loaded by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="about-content">
+                <h2>Authentic Chinese Tea from Paradise Island</h2>
+                <p>Koh Phangan Chinese Tea brings you the finest traditional Chinese teas, cultivated with care on the beautiful island of Koh Phangan. We combine ancient Chinese tea-making traditions with the island's pristine natural environment.</p>
+                <p>Each leaf is hand-selected and processed using time-honored methods to preserve its authentic flavor and powerful health benefits.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="container">
+            <h2>Questions? Reach Out!</h2>
+            <div class="contact-buttons">
+                <a href="#" class="contact-btn whatsapp" id="whatsapp-btn">
+                    <span class="icon">📱</span> WhatsApp
+                </a>
+                <a href="#" class="contact-btn line" id="line-btn">
+                    <span class="icon">💬</span> LINE
+                </a>
+                <a href="#" class="contact-btn telegram" id="telegram-btn">
+                    <span class="icon">✈️</span> Telegram
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Modal -->
+    <div class="modal" id="cart-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Shopping Cart</h2>
+                <button class="close-btn" id="close-cart">&times;</button>
+            </div>
+            <div class="modal-body" id="cart-items">
+                <!-- Cart items loaded by JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <div class="cart-total">
+                    <span>Total:</span>
+                    <span class="total-amount" id="total-amount">฿0</span>
+                </div>
+                <button class="checkout-btn" id="checkout-btn">Checkout with Card 💳</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Koh Phangan Chinese Tea. Crafted with 💚 on the island.</p>
+        </div>
+    </footer>
+
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="script.js"></script>
+</body>
+</html>
