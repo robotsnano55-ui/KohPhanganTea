@@ -74,6 +74,22 @@
         <div class="container">
             <h2>Order Now via Messaging Apps</h2>
             <p class="contact-subtitle">Chat with us directly for instant support and orders</p>
+            
+            <!-- Donation Button -->
+            <div class="donation-banner">
+                <div class="donation-content">
+                    <span class="donation-icon">💚</span>
+                    <div class="donation-text">
+                        <h3>Support Our Tea Community</h3>
+                        <p>Help us grow organic tea on Koh Phangan</p>
+                    </div>
+                    <button class="donation-btn" id="donation-btn">
+                        <span class="btn-icon">🎁</span>
+                        <span>Donate</span>
+                    </button>
+                </div>
+            </div>
+            
             <div class="contact-buttons">
                 <a href="#" class="contact-btn whatsapp" id="whatsapp-btn">
                     <div class="contact-icon">
@@ -125,6 +141,62 @@
             </div>
         </div>
     </section>
+
+    <!-- Donation Modal -->
+    <div class="modal" id="donation-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>💚 Support Our Tea Community</h2>
+                <button class="close-btn" id="close-donation">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="donation-info">
+                    <p class="donation-description">
+                        Your donation helps us maintain organic tea plantations on Koh Phangan, 
+                        support local farmers, and preserve traditional Chinese tea-making methods.
+                    </p>
+                    
+                    <div class="donation-amounts">
+                        <h3>Choose Amount</h3>
+                        <div class="amount-buttons">
+                            <button class="amount-btn" data-amount="100">฿100</button>
+                            <button class="amount-btn" data-amount="250">฿250</button>
+                            <button class="amount-btn" data-amount="500">฿500</button>
+                            <button class="amount-btn" data-amount="1000">฿1000</button>
+                        </div>
+                        <div class="custom-amount">
+                            <label>Or enter custom amount:</label>
+                            <input type="number" id="custom-amount" placeholder="฿" min="1">
+                        </div>
+                    </div>
+                    
+                    <div class="donation-methods">
+                        <h3>Donation Method</h3>
+                        <div class="donation-method-buttons">
+                            <button class="donation-method-btn" data-method="crypto">
+                                <span class="method-icon">₿</span>
+                                <span>Crypto</span>
+                            </button>
+                            <button class="donation-method-btn" data-method="card">
+                                <span class="method-icon">💳</span>
+                                <span>Card</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="donation-impact">
+                        <h4>Your Impact:</h4>
+                        <ul>
+                            <li>🌱 Support organic farming practices</li>
+                            <li>👨‍🌾 Help local tea farmers</li>
+                            <li>🍵 Preserve traditional tea culture</li>
+                            <li>🌍 Promote sustainable agriculture</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Cart Modal -->
     <div class="modal" id="cart-modal">

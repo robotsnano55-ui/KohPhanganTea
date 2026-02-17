@@ -9,6 +9,12 @@ const contacts = {
     telegram: "kohphanganTea"  // Your Telegram username
 };
 
+// Donation configuration
+const donationConfig = {
+    stripeLink: 'https://donate.stripe.com/test_YOUR_DONATION_LINK', // Create at https://dashboard.stripe.com/payment-links
+    defaultAmounts: [100, 250, 500, 1000] // Preset donation amounts in THB
+};
+
 // Crypto Wallet Addresses (UPDATE WITH YOUR ACTUAL WALLETS)
 const cryptoWallets = {
     btc: "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh", // Your Bitcoin address
@@ -464,6 +470,142 @@ function setupCartModal() {
     
     // Copy address button
     copyBtn.addEventListener('click', copyAddress);
+    
+    // Setup donation modal
+    setupDonationModal();
+}
+
+// ============================================
+// DONATION FUNCTIONALITY
+// ============================================
+
+let selectedDonationAmount = null;
+let selectedDonationMethod = null;
+
+function setupDonationModal() {
+    const donationBtn = document.getElementById('donation-btn');
+    const donationModal = document.getElementById('donation-modal');
+    const closeDonation = document.getElementById('close-donation');
+    const customAmountInput = document.getElementById('custom-amount');
+    
+    // Open donation modal
+    donationBtn.addEventListener('click', () => {
+        donationModal.classList.add('active');
+        selectedDonationAmount = null;
+        selectedDonationMethod = null;
+        customAmountInput.value = '';
+        
+        // Reset selections
+        document.querySelectorAll('.amount-btn').forEach(btn => btn.classList.remove('selected'));
+        document.querySelectorAll('.donation-method-btn').forEach(btn => btn.classList.remove('selected'));
+    });
+    
+    // Close donation modal
+    closeDonation.addEventListener('click', () => {
+        donationModal.classList.remove('active');
+    });
+    
+    donationModal.addEventListener('click', (e) => {
+        if (e.target === donationModal) {
+            donationModal.classList.remove('active');
+        }
+    });
+    
+    // Amount selection buttons
+    document.querySelectorAll('.amount-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            selectedDonationAmount = parseInt(btn.getAttribute('data-amount'));
+            customAmountInput.value = '';
+            
+            // Update button states
+            document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            
+            // If method is selected, process donation
+            if (selectedDonationMethod) {
+                processDonation();
+            }
+        });
+    });
+    
+    // Custom amount input
+    customAmountInput.addEventListener('input', (e) => {
+        selectedDonationAmount = parseInt(e.target.value) || null;
+        
+        // Deselect preset amounts
+        document.querySelectorAll('.amount-btn').forEach(btn => btn.classList.remove('selected'));
+        
+        // If method is selected and amount is valid, process donation
+        if (selectedDonationMethod && selectedDonationAmount > 0) {
+            processDonation();
+        }
+    });
+    
+    // Donation method buttons
+    document.querySelectorAll('.donation-method-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            selectedDonationMethod = btn.getAttribute('data-method');
+            
+            // Update button states
+            document.querySelectorAll('.donation-method-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            
+            // If amount is selected, process donation
+            if (selectedDonationAmount > 0) {
+                processDonation();
+            } else {
+                showNotification('Please select or enter a donation amount first');
+            }
+        });
+    });
+}
+
+function processDonation() {
+    if (!selectedDonationAmount || selectedDonationAmount <= 0) {
+        showNotification('Please enter a valid donation amount');
+        return;
+    }
+    
+    if (!selectedDonationMethod) {
+        showNotification('Please select a payment method');
+        return;
+    }
+    
+    if (selectedDonationMethod === 'card') {
+        // Redirect to Stripe donation link
+        const stripeLink = donationConfig.stripeLink;
+        
+        if (stripeLink && !stripeLink.includes('YOUR_')) {
+            window.location.href = stripeLink;
+        } else {
+            // Fallback to contact
+            const message = encodeURIComponent(
+                `Hi! I'd like to make a donation of ฿${selectedDonationAmount} to support your tea community. 💚\n\nPlease send me payment details. Thank you!`
+            );
+            window.open(`https://wa.me/${contacts.whatsapp.replace(/[^0-9]/g, '')}?text=${message}`, '_blank');
+        }
+    } else if (selectedDonationMethod === 'crypto') {
+        // Show crypto payment options
+        document.getElementById('donation-modal').classList.remove('active');
+        
+        // Create temporary cart for donation
+        const originalCart = [...cart];
+        cart = [{
+            id: 'donation',
+            name: 'Donation',
+            price: selectedDonationAmount,
+            quantity: 1,
+            currency: '฿'
+        }];
+        
+        // Open crypto modal
+        handleCryptoCheckout();
+        
+        // Restore original cart after a delay
+        setTimeout(() => {
+            cart = originalCart;
+        }, 1000);
+    }
 }
 
 // ============================================
